@@ -23,4 +23,4 @@ COPY keycloak-db /opt/jboss/keycloak/standalone/data
 EXPOSE 9080 9443 9990
 
 # Comando de inicio
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--optimized", "--import-realm"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--import-realm"]
