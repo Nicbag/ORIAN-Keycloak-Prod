@@ -1,20 +1,14 @@
-FROM quay.io/keycloak/keycloak:25.0.1 AS builder
-
-ARG KC_HEALTH_ENABLED KC_METRICS_ENABLED KC_FEATURES KC_DB KC_HTTP_ENABLED PROXY_ADDRESS_FORWARDING QUARKUS_TRANSACTION_MANAGER_ENABLE_RECOVERY KC_HOSTNAME KC_LOG_LEVEL KC_DB_POOL_MIN_SIZE
-
-ADD --chown=keycloak:keycloak https://github.com/klausbetz/apple-identity-provider-keycloak/releases/download/1.7.1/apple-identity-provider-1.7.1.jar /opt/keycloak/providers/apple-identity-provider-1.7.1.jar
-ADD --chown=keycloak:keycloak https://github.com/wadahiro/keycloak-discord/releases/download/v0.5.0/keycloak-discord-0.5.0.jar /opt/keycloak/providers/keycloak-discord-0.5.0.jar
-
-RUN /opt/keycloak/bin/kc.sh build
-
+# Usar la imagen oficial de Keycloak como base
 FROM quay.io/keycloak/keycloak:25.0.1
-
-COPY java.config /etc/crypto-policies/back-ends/java.config
-
-COPY --from=builder /opt/keycloak/ /opt/keycloak/
-
-EXPOSE 8080 9080
-
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-
-CMD ["start", "--optimized", "--import-realm"]
+# Configuraciones para Mailgun
+ENV JAVA_OPTS="-Djboss.mail.smtp.host=smtp.mailgun.org \
+               -Djboss.mail.smtp.port=587 \
+               -Djboss.mail.smtp.starttls.enable=true \
+               -Djboss.mail.smtp.auth=true"
+# Copiar la configuración del realm y el script de health check
+COPY realm-config /opt/keycloak/data/import/
+COPY keycloak-db /opt/jboss/keycloak/standalone/data
+# Exponer los puertos que usa la aplicación
+EXPOSE 8080 
+# Comando de inicio
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--import-realm"]
