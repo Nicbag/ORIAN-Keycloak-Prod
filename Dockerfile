@@ -21,7 +21,6 @@ WORKDIR /opt/keycloak
 
 # Copiar la configuración del realm y el script de health check
 COPY realm-config /opt/keycloak/data/import/
-COPY realm-config/keycloak-health-check.sh /opt/local/bin/health-check.sh
 COPY keycloak-db /opt/jboss/keycloak/standalone/data
 
 # Dar permisos al script de health check
