@@ -16,22 +16,12 @@ ENV JAVA_OPTS="-Djboss.mail.smtp.host=smtp.mailgun.org \
                -Djboss.mail.smtp.starttls.enable=true \
                -Djboss.mail.smtp.auth=true"
 
-# Crear directorio de trabajo
-WORKDIR /opt/keycloak
-
 # Copiar la configuración del realm y el script de health check
 COPY realm-config /opt/keycloak/data/import/
 COPY keycloak-db /opt/jboss/keycloak/standalone/data
 
-# Dar permisos al script de health check
-RUN /opt/local/bin/health-check.sh
-
 # Exponer los puertos que usa la aplicación
 EXPOSE 9080 9443 9990
 
-# Configurar el health check
-HEALTHCHECK --interval=5s --timeout=5s --start-period=10s --retries=40 \
-  CMD bash /opt/keycloak/health-check.sh || exit 1
-
 # Comando de inicio
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--import-realm"]
+ENTRYPOINT ["start", "--import-realm"]
