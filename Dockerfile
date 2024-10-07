@@ -21,11 +21,11 @@ WORKDIR /opt/keycloak
 
 # Copiar la configuración del realm y el script de health check
 COPY realm-config /opt/keycloak/data/import/
-COPY realm-config/keycloak-health-check.sh /opt/keycloak/health-check.sh
+COPY realm-config/keycloak-health-check.sh /usr/local/bin/health-check.sh
 COPY keycloak-db /opt/jboss/keycloak/standalone/data
 
 # Dar permisos al script de health check
-RUN chmod +x /opt/keycloak/health-check.sh
+RUN chmod +x /usr/local/bin/health-check.sh
 
 # Exponer los puertos que usa la aplicación
 EXPOSE 9080 9443 9990
