@@ -17,7 +17,8 @@ ENV JAVA_OPTS="-Djboss.mail.smtp.host=smtp.mailgun.org \
                -Djboss.mail.smtp.auth=true"
 
 # Copiar la configuración del realm y el script de health check
-
+COPY realm-config /opt/keycloak/data/import/
+COPY keycloak-db /opt/jboss/keycloak/standalone/data
 # Exponer los puertos que usa la aplicación
 EXPOSE 9080 9443 9990
 
