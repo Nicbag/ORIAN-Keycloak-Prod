@@ -8,7 +8,9 @@ ADD --chown=keycloak:keycloak https://github.com/wadahiro/keycloak-discord/relea
 RUN /opt/keycloak/bin/kc.sh build
 
 FROM quay.io/keycloak/keycloak:25.0.1
+
 COPY java.config /etc/crypto-policies/back-ends/java.config
+
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 EXPOSE 8080
