@@ -13,10 +13,6 @@ COPY java.config /etc/crypto-policies/back-ends/java.config
 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
-COPY realm-config/jhipster-realm.json /opt/keycloak/data/import
-
-RUN chmod 644 /opt/keycloak/data/import
-
 EXPOSE 8080
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start", "--optimized", "--import-realm"]
+CMD ["start", "--import-realm"]
