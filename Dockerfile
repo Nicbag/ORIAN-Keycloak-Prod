@@ -15,7 +15,7 @@ COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
 COPY realm-config/jhipster-realm.json /opt/keycloak/data/import
 
-RUN chmod 644 /opt/keycloak/data/import/jhipster-realm.json
+RUN chmod 644 /opt/keycloak/data/import
 
 EXPOSE 8080
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
